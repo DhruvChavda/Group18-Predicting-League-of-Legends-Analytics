@@ -1,0 +1,22 @@
+{% extends 'authenticate/base.html' %}
+
+
+{% block content %}
+<h2> Home page</h2>
+    {% if user.is_authenticated %}
+        customlook up Account by
+        <a class="nav-link" href="{% url 'SearchByLookupID' %}">SearchBy Summoner name</a>
+        <a class="nav-link" href="{% url 'SearchByAccountID' %}">SearchBy Account id</a>
+        <a class="nav-link" href="{% url 'SearchBySummonerId' %}">SearchBy Summoner id</a>
+
+        <p> </p>
+        get all information about champion that is played by particular SummonerId
+        <a class="nav-link" href="{% url 'listchampbysum' %}">get champ info</a>
+
+        <p> </p>
+        get all information about upcoming league
+        <a class="nav-link" href="{% url 'upcoming_league' %}">upcoming league info</a>
+
+        
+    {% endif %}   
+{% endblock %}

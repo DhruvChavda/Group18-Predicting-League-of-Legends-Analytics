@@ -1,0 +1,16 @@
+{% extends 'gameinfo/base.html' %}
+
+{% block content %}
+
+
+    {% for idx in upcoming_league %}
+        <p> league info </p>
+        {% for key, value in idx.items %}
+            <li> {{key}} - {{value}} </li>
+            
+        {% endfor %}
+        <p></p>
+    {% endfor %}
+
+        
+{% endblock %}

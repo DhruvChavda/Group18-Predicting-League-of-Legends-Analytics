@@ -1,0 +1,11 @@
+{% extends 'gameinfo/base.html' %}
+
+{% block content %}
+
+    <form method="POST" action="{% url 'listchampbysum' %}">
+        {% csrf_token %}
+        <input type="text" name="SummonerId" placeholder="SummonerId"> 
+    <input type="submit" value="submit" class=" btn btn-secondary">
+    {{listOfChamp}}
+        
+{% endblock %}

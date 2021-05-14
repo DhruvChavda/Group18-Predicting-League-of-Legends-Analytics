@@ -1,0 +1,28 @@
+{% extends 'gameinfo/base.html' %}
+
+{% block content %}
+
+    <form method="POST" >
+        {% csrf_token %}
+        <input type="text" name="SummonerId" placeholder="Summoner name"> 
+
+        <label for="region">Choose a region:</label>
+
+        <select id="region">
+        <option value="br1" selected="selected" >br1</option>
+        <option value="eun1">eun1</option>
+        <option value="euw1">euw1</option>
+        <option value="jp1">jp1</option>
+        <option value="kr">kr</option>
+        <option value="la1">la1</option>
+        <option value="la2">la2</option>
+        <option value="na1">na1</option>
+        <option value="oc1">oc1</option>
+        <option value="ru">ru</option>
+        <option value="tr1">tr1</option>       
+        </select>
+
+        
+    <input type="submit" value="submit" class=" btn btn-secondary">
+    
+{% endblock %}

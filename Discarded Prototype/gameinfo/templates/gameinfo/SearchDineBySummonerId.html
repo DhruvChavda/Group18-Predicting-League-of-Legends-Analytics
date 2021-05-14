@@ -1,0 +1,12 @@
+{% extends 'gameinfo/base.html' %}
+
+{% block content %}
+
+
+    <p> summoner Details </p>
+    {% for key, value in lookup.items %}
+        <li> {{key}} - {{value}} </li>
+            
+    {% endfor %}
+    {{status_code}}
+{% endblock %}

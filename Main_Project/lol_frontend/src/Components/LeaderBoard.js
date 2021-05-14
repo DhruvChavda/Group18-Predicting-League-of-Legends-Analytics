@@ -1,144 +1,163 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import data from "../Data/leaderboardData";
-import { Paper } from "@material-ui/core";
+import { Button, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-// import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles({
-  root: {
-    margin: 10,
-    padding: 5,
-  },
-  table: {
-    minWidth: "100%",
-  },
-  formControl: {
-    textAlign: "center",
-    margin: 5,
-    minWidth: 120,
-  },
-  selectEmpty: {
-    // marginTop: theme.spacing(2),
-  },
+    root: {
+        margin: 10,
+        padding: 5,
+    },
+    table: {
+        minWidth: "100%",
+    },
+    formControl: {
+        textAlign: "center",
+        margin: 5,
+        minWidth: 170,
+    },
+    selectEmpty: {
+        // marginTop: theme.spacing(2),
+    },
 });
 
 export default function BasicTable() {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  const [region, setRegion] = React.useState("");
-  const [rank, setRank] = React.useState("");
-  const [challenger, setChallenger] = React.useState("");
+    const [param, setParam] = useState({
+        league: "",
+        queue: "",
+        region: "",
+    });
 
-  const handleChangeRegion = (event) => {
-    setRegion(event.target.value);
-    console.log(event.target.value); //Remove later
-  };
+    const [dat, setDat] = useState(null);
 
-  const handleChangeRank = (event) => {
-    setRank(event.target.value);
-    console.log(event.target.value); //Remove later
-  };
+    const handleClick = () => {
+        console.log(param);
+        axios
+            .post("/api/leaderBoard", param)
+            .then((res) => {
+                console.log(res.data);
+                setDat(res.data);
+            })
+            .catch((err) => console.log(err));
+    };
 
-  const handleChangeChallenger = (event) => {
-    setChallenger(event.target.value);
-    console.log(event.target.value); //Remove later
-  };
+    const handleChangeRegion = (event) => {
+        setParam({ ...param, region: event.target.value });
+    };
 
-  return (
-    <React.Fragment>
-      <Paper elevation={2} className={classes.root}>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-outlined-label">Region</InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="region-select-outlined"
-            value={region}
-            onChange={handleChangeRegion}
-            label="Region"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={"Region 1"}>Region 1</MenuItem>
-            <MenuItem value={"Region 2"}>Region 2</MenuItem>
-            <MenuItem value={"Region 3"}>Region 3</MenuItem>
-          </Select>
-        </FormControl>
+    const handleChangeQueue = (event) => {
+        setParam({ ...param, queue: event.target.value });
+    };
 
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-outlined-label">Rank</InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="rank-select-outlined"
-            value={rank}
-            onChange={handleChangeRank}
-            label="Rank"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={"Rank 1"}>Rank 1</MenuItem>
-            <MenuItem value={"Rank 2"}>Rank 2</MenuItem>
-            <MenuItem value={"Rank 3"}>Rank 3</MenuItem>
-          </Select>
-        </FormControl>
+    const handleChangeLeague = (event) => {
+        setParam({ ...param, league: event.target.value });
+    };
 
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-outlined-label">
-            Challenger
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="challenger-select-outlined"
-            value={challenger}
-            onChange={handleChangeChallenger}
-            label="Challenger"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={"Challenger 1"}>Challenger 1</MenuItem>
-            <MenuItem value={"Challenger 2"}>Challenger 2</MenuItem>
-            <MenuItem value={"Challenger 3"}>Challenger 3</MenuItem>
-          </Select>
-        </FormControl>
-      </Paper>
-      <Paper className={classes.table} elevation={2}>
-        <TableContainer>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Rank</TableCell>
-                <TableCell align="center">Summoner</TableCell>
-                <TableCell align="center">Tier</TableCell>
-                <TableCell align="center">LP</TableCell>
-                <TableCell align="center">Win Rate</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((x) => (
-                <TableRow key={x.rank}>
-                  <TableCell align="center">{x.rank}</TableCell>
-                  <TableCell align="center">{x.name}</TableCell>
-                  <TableCell align="center">{x.tier}</TableCell>
-                  <TableCell align="center">{x.lp}</TableCell>
-                  <TableCell align="center">{x.winRate} %</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <Paper elevation={2} className={classes.root}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label">League</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="league-select"
+                        value={param.leagues_arr}
+                        onChange={handleChangeLeague}
+                        required
+                        label="Leagues"
+                    >
+                        <MenuItem value={"challengerleagues"}>Challenger Leagues</MenuItem>
+                        <MenuItem value={"grandmasterleagues"}>Grand Master Leagues</MenuItem>
+                        <MenuItem value={"masterleagues"}>Master Leagues</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label">Queue Type</InputLabel>
+                    <Select
+                        labelId="queue-select"
+                        id="queue-select"
+                        value={param.queue_arr}
+                        onChange={handleChangeQueue}
+                        label="Queue Type"
+                    >
+                        <MenuItem value={"RANKED_SOLO_5x5"}>Solo Rank</MenuItem>
+                        <MenuItem value={"RANKED_FLEX_SR"}>Flex Rank</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="region select">Region</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="region-select"
+                        value={param.region_arr}
+                        onChange={handleChangeRegion}
+                        label="Challenger"
+                    >
+                        <MenuItem value={"br1"}>br 1</MenuItem>
+                        <MenuItem value={"eun1"}>eun 1</MenuItem>
+                        <MenuItem value={"euw1"}>euw 1</MenuItem>
+                        <MenuItem value={"jp1"}>jp 1</MenuItem>
+                        <MenuItem value={"kr"}>kr</MenuItem>
+                        <MenuItem value={"la1"}>la 1</MenuItem>
+                        <MenuItem value={"la2"}>la 2</MenuItem>
+                        <MenuItem value={"na1"}>na 1</MenuItem>
+                        <MenuItem value={"oc1"}>oc 1</MenuItem>
+                        <MenuItem value={"ru"}>ru</MenuItem>
+                        <MenuItem value={"tr1"}>tr 1</MenuItem>
+                    </Select>
+                </FormControl>
+                <Button variant="contained" color="primary" onClick={handleClick}>
+                    Submit
+                </Button>
+            </Paper>
+            {dat === null ? (
+                <Typography variant="h4" color="textSecondary" align="center">
+                    Leaderboard Will be Shown Here Soon! 
+                </Typography>
+            ) : (
+                <Paper className={classes.table} elevation={2}>
+                    <TableContainer>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Rank</TableCell>
+                                    <TableCell align="center">Summoner Name</TableCell>
+                                    <TableCell align="center">LP</TableCell>
+                                    <TableCell align="center">Wins</TableCell>
+                                    <TableCell align="center">Loss</TableCell>
+                                    <TableCell align="center">Win Rate</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {dat.map((x, ind) => (
+                                    <TableRow key={ind}>
+                                        <TableCell align="center">{ind + 1}</TableCell>
+                                        <TableCell align="center">{x[0]}</TableCell>
+                                        <TableCell align="center">{x[1]}</TableCell>
+                                        <TableCell align="center">{x[2]}</TableCell>
+                                        <TableCell align="center">{x[3]}</TableCell>
+                                        <TableCell align="center">{x[4].toFixed(2)} %</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
+            )}
+        </React.Fragment>
+    );
 }

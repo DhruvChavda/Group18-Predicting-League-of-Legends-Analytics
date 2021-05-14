@@ -1,7 +1,7 @@
 const data = [
   {
     id: 1,
-    name: "CHAMsdfsdkfmP 1",
+    name: "CHAMP 1",
     abilities: "fire",
     desc: "kuch bhi",
   },
